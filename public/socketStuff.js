@@ -25,7 +25,7 @@ var draw = () => {
   context.translate(camX, camY);
 
   //draw all the players
-  players?.forEach?.((p) => {
+  players.forEach((p) => {
     if (!p.playerData) {
       //if the playerData doesn't exist, this is an absobred player and we don't draw
       return;
@@ -51,7 +51,7 @@ var draw = () => {
   });
 
   //draw all the orbs
-  orbs?.forEach?.((orb) => {
+  orbs.forEach((orb) => {
     context.beginPath(); //this will start a new path
     context.fillStyle = orb.color;
     context.arc(orb.locX, orb.locY, orb.radius, 0, Math.PI * 2);
@@ -105,12 +105,12 @@ canvas.addEventListener("mousemove", (event) => {
 // const io = require("socket.io");
 // import io from "socket.io";
 //connect to the socket server!
-const socket = io.connect("http://localhost:9000");
+const socket = io.connect("http://localhost:8500");
 
 const init = async () => {
   //init is called inside of start-game click listener
   const initData = await socket.emit("init", {
-    //emitWithAct
+    // emitWithAct
     playerName: player.name,
   });
   //our await has resolved, so start 'tocking'
@@ -120,7 +120,7 @@ const init = async () => {
       yVector: player.yVector ? player.yVector : 0.1,
     });
   }, 33);
-  // console.log(initData.orbs);
+  console.log(initData, initData.orbs);
   orbs = initData.orbs;
   player.indexInPlayers = initData.indexInPlayers;
   draw(); //draw function is in canvasStuff

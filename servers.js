@@ -2,12 +2,15 @@
 // Agar.io clone
 const express = require("express");
 const app = express();
+const cors = require("cors");
 app.use(express.static(__dirname + "/public"));
-const expressServer = app.listen(6060);
+const expressServer = app.listen(8500);
 const socketio = require("socket.io");
+
+app.use(cors("*"));
 const io = socketio(expressServer, {
   cors: {
-    origin: ["http://localhost:3030"],
+    origin: ["http://localhost:5500"],
     credentials: true,
   },
 });
