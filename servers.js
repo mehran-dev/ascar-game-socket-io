@@ -4,13 +4,13 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 app.use(express.static(__dirname + "/public"));
-const expressServer = app.listen(8500);
+const expressServer = app.listen(9600);
 const socketio = require("socket.io");
 
 app.use(cors("*"));
 const io = socketio(expressServer, {
   cors: {
-    origin: ["http://localhost:5500"],
+    origin: ["http://localhost:5500", "http://localhost:9600"],
     credentials: true,
   },
 });

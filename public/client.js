@@ -105,30 +105,36 @@ canvas.addEventListener("mousemove", (event) => {
 // const io = require("socket.io");
 // import io from "socket.io";
 //connect to the socket server!
-const socket = io.connect("http://localhost:8500");
+const socket = io.connect("http://localhost:9600");
 
 const init = async () => {
   //init is called inside of start-game click listener
-  const initData = await socket.emit("init", {
-    // emitWithAct
-    playerName: player.name,
-  });
-  //our await has resolved, so start 'tocking'
-  setInterval(async () => {
-    socket.emit("tock", {
-      xVector: player.xVector ? player.xVector : 0.1,
-      yVector: player.yVector ? player.yVector : 0.1,
-    });
-  }, 33);
-  console.log(initData, initData.orbs);
-  orbs = initData.orbs;
-  player.indexInPlayers = initData.indexInPlayers;
-  draw(); //draw function is in canvasStuff
+  const initData = await socket.emit(
+    "init",
+    {
+      // emitWithAct
+      playerName: player.name,
+    },
+    (fooxxx) => {
+      console.log(`foo`, foo);
+      //our await has resolved, so start 'tocking'
+      setInterval(async () => {
+        socket.emit("tock", {
+          xVector: player.xVector ? player.xVector : 0.1,
+          yVector: player.yVector ? player.yVector : 0.1,
+        });
+      }, 33);
+      console.log(fooxxx, fooxxx.orbs);
+      orbs = fooxxx.orbs;
+      player.indexInPlayers = fooxxx.indexInPlayers;
+      draw(); //draw function is in canvasStuff
+    }
+  );
 };
 window.init = init;
 //the server sends out the location/data of all players 30/second
 socket.on("tick", (playersArray) => {
-  // console.log(players)
+  console.log(players);
   players = playersArray;
   if (players[player.indexInPlayers].playerData) {
     player.locX = players[player.indexInPlayers].playerData.locX;
